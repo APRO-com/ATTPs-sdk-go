@@ -4,7 +4,9 @@ import (
 	"ai-agent-go-sdk/config"
 	"ai-agent-go-sdk/contract/agent_manager"
 	"ai-agent-go-sdk/contract/agent_proxy"
+	"ai-agent-go-sdk/contract/converter"
 	"ai-agent-go-sdk/util"
+	"encoding/hex"
 	"fmt"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
@@ -74,6 +76,18 @@ func (aiAgentClient *AiAgentClient) Verify(
 		return nil, err
 	}
 	return tx, nil
+}
+
+func (aiAgentClient *AiAgentClient) Converter(converterAddr, data string) (string, error) {
+	newConverter, err := converter.NewConverter(common.HexToAddress(converterAddr), aiAgentClient.Client)
+	if err != nil {
+		return "", err
+	}
+	newData, err := newConverter.Converter(nil, common.FromHex(data))
+	if err != nil {
+		return "", err
+	}
+	return hex.EncodeToString(newData), nil
 }
 
 func (aiAgentClient *AiAgentClient) GetManager(proxy string) (string, error) {
