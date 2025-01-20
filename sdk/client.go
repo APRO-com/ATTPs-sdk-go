@@ -48,6 +48,13 @@ func (aiAgentClient *AiAgentClient) RegisterAgent(
 	} else if agentSettings.AgentHeader.Version != version {
 		return nil, fmt.Errorf("agentSettings version is not matched with agentProxy")
 	}
+	isValid, err := aiAgentClient.isValidSourceAgentId(proxyAddr, agentSettings.AgentHeader.SourceAgentId)
+	if err != nil {
+		return nil, err
+	}
+	if !isValid {
+		return nil, fmt.Errorf("agentSettings.SourceAgentId is not valid")
+	}
 	agentProxy, err := agent_proxy.NewAgentProxy(common.HexToAddress(proxyAddr), aiAgentClient.Client)
 	tx, err := agentProxy.CreateAndRegisterAgent(opts, agentSettings)
 	if err != nil {
@@ -90,6 +97,18 @@ func (aiAgentClient *AiAgentClient) Converter(converterAddr, data string) (strin
 	return hex.EncodeToString(newData), nil
 }
 
+func (aiAgentClient *AiAgentClient) isValidSourceAgentId(proxy, agentId string) (bool, error) {
+	managerAddr, err := aiAgentClient.GetManager(proxy)
+	if err != nil {
+		return false, err
+	}
+	agentManager, err := agent_manager.NewAgentManager(common.HexToAddress(managerAddr), aiAgentClient.Client)
+	if err != nil {
+		return false, err
+	}
+	return agentManager.IsValidSourceAgentId(nil, agentId)
+}
+
 func (aiAgentClient *AiAgentClient) GetManager(proxy string) (string, error) {
 	agentProxy, err := agent_proxy.NewAgentProxy(common.HexToAddress(proxy), aiAgentClient.Client)
 	if err != nil {
@@ -107,7 +126,7 @@ func (aiAgentClient *AiAgentClient) GetVersion(proxy string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	agentManager, err := agent_manager.NewAgentProxy(common.HexToAddress(managerAddr), aiAgentClient.Client)
+	agentManager, err := agent_manager.NewAgentManager(common.HexToAddress(managerAddr), aiAgentClient.Client)
 	if err != nil {
 		return "", err
 	}

@@ -51,7 +51,7 @@ func BuildRegisterAgentData(
 		return agent_proxy.CommonAgentSettings{}, fmt.Errorf("invalild priority")
 	}
 
-	signersAddr := make([]common.Address, len(signers))
+	signersAddr := make([]common.Address, 0)
 	for _, signer := range signers {
 		signersAddr = append(signersAddr, common.HexToAddress(signer))
 	}

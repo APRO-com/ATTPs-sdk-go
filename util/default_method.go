@@ -34,6 +34,9 @@ func GetDefaultSignerFn(prikey string, chainID *big.Int) func(address common.Add
 }
 
 func GetDefaultTransactOpts(client *ethclient.Client, prikey string, chanID, gasprice *big.Int, gasLimit uint64) (*bind.TransactOpts, error) {
+	if len(prikey) > 1 && prikey[:2] == "0x" {
+		prikey = prikey[2:]
+	}
 	privateKey, err := crypto.HexToECDSA(prikey)
 	if err != nil {
 		return nil, err

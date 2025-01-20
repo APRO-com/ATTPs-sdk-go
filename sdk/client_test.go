@@ -78,9 +78,9 @@ func Test_verify(t *testing.T) {
 
 	var signatures [][]byte
 	for _, prikey := range signerPrikeys {
-		prikeyObj, err := crypto.HexToECDSA(prikey)
+		prikeyObj, err := util.HexToECDSA(prikey)
 		if err != nil {
-			assert.NoError(t, err, "Failed to generate signatures")
+			assert.NoError(t, err, "Failed to init private key")
 		}
 		signature, err := crypto.Sign(dataHashBytes, prikeyObj)
 		if err != nil {
@@ -123,6 +123,19 @@ func TestClient_Converter(t *testing.T) {
 	converterData, err := aiAgentClient.Converter(converterAddr, data)
 	assert.NoError(t, err, "Failed to call converter")
 	assert.Equal(t, expectConverterData, converterData)
+}
+
+func TestClient_IsValidateAgentID(t *testing.T) {
+	// Create a new client
+	aiAgentClient, err := NewClient(config.BSC_TEST_NET)
+	assert.NoError(t, err, "Failed to create aiAgentClient client")
+
+	// Get the manager for the proxy address
+	//isValid, err := aiAgentClient.isValidSourceAgentId(proxyAddress, "087d5233-3256-43c5-8ce2-0ad705357c4c")
+	isValid, err := aiAgentClient.isValidSourceAgentId(proxyAddress, "0ccdc715-5386-4483-8a6b-8b7e319f7b0f")
+	assert.NoError(t, err, "Failed to call isValidSourceAgentId for proxy address")
+	assert.NotNil(t, isValid, "isValid should not be nil")
+	fmt.Println("isValid:", isValid)
 }
 
 func TestClient_GetVersion(t *testing.T) {
