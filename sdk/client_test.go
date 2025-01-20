@@ -52,13 +52,14 @@ func TestClient_RegisterAgent(t *testing.T) {
 	)
 	assert.NoError(t, err, "BuildRegisterAgentData failed")
 
-	tx, err := aiAgentClient.RegisterAgent(proxyAddress, opts, agentSettings)
+	tx, agent, err := aiAgentClient.RegisterAgent(proxyAddress, opts, agentSettings)
 	assert.NoError(t, err, "RegisterAgent failed")
 
 	assert.NotNil(t, tx, "tx is nil")
 	assert.NotEmpty(t, tx.Hash().String(), "txHash is nil")
 
 	fmt.Println("txHash:", tx.Hash().String())
+	fmt.Println("agent address:", agent)
 }
 
 func Test_verify(t *testing.T) {

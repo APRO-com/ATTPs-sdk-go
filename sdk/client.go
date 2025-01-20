@@ -11,8 +11,10 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"math/big"
+	"time"
 )
 
 type AiAgentClient struct {
@@ -38,29 +40,40 @@ func NewClient(chainInfo config.ChainInfo) (*AiAgentClient, error) {
 func (aiAgentClient *AiAgentClient) RegisterAgent(
 	proxyAddr string,
 	opts *bind.TransactOpts,
-	agentSettings agent_proxy.CommonAgentSettings) (*types.Transaction, error) {
+	agentSettings agent_proxy.CommonAgentSettings) (tx *types.Transaction, agentAddr string, err error) {
 	version, err := aiAgentClient.GetVersion(proxyAddr)
 	if err != nil {
-		return nil, err
+		return tx, "", err
 	}
 	if agentSettings.AgentHeader.Version == "" {
 		agentSettings.AgentHeader.Version = version
 	} else if agentSettings.AgentHeader.Version != version {
-		return nil, fmt.Errorf("agentSettings version is not matched with agentProxy")
+		return nil, "", fmt.Errorf("agentSettings version is not matched with agentProxy")
 	}
 	isValid, err := aiAgentClient.isValidSourceAgentId(proxyAddr, agentSettings.AgentHeader.SourceAgentId)
 	if err != nil {
-		return nil, err
+		return tx, "", err
 	}
 	if !isValid {
-		return nil, fmt.Errorf("agentSettings.SourceAgentId is not valid")
+		return nil, "", fmt.Errorf("agentSettings.SourceAgentId is not valid")
 	}
 	agentProxy, err := agent_proxy.NewAgentProxy(common.HexToAddress(proxyAddr), aiAgentClient.Client)
-	tx, err := agentProxy.CreateAndRegisterAgent(opts, agentSettings)
+	tx, err = agentProxy.CreateAndRegisterAgent(opts, agentSettings)
 	if err != nil {
-		return nil, err
+		return tx, "", err
 	}
-	return tx, nil
+
+	txReceipt, err := util.WaitForTransactionReceipt(aiAgentClient.Client, tx.Hash(), 10, time.Second*6)
+	if err != nil {
+		return tx, "", fmt.Errorf("failed to fetch transaction receipt: %v", err)
+	}
+
+	for _, log := range txReceipt.Logs {
+		if log.Topics[0].Hex() == crypto.Keccak256Hash([]byte(config.AgentCreatedEvent)).Hex() {
+			agentAddr = common.HexToAddress(log.Topics[2].Hex()).Hex()
+		}
+	}
+	return tx, agentAddr, nil
 }
 
 func (aiAgentClient *AiAgentClient) Verify(
