@@ -1,11 +1,11 @@
 package sdk
 
 import (
-	"ai-agent-go-sdk/config"
-	"ai-agent-go-sdk/contract/agent_proxy"
-	"ai-agent-go-sdk/util"
 	"encoding/hex"
 	"fmt"
+	"github.com/APRO-com/ai-agent-sdk-go/config"
+	"github.com/APRO-com/ai-agent-sdk-go/contract/agent_proxy"
+	"github.com/APRO-com/ai-agent-sdk-go/util"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/stretchr/testify/assert"
 	"math/big"
@@ -52,13 +52,14 @@ func TestClient_RegisterAgent(t *testing.T) {
 	)
 	assert.NoError(t, err, "BuildRegisterAgentData failed")
 
-	tx, err := aiAgentClient.RegisterAgent(proxyAddress, opts, agentSettings)
+	tx, agent, err := aiAgentClient.RegisterAgent(proxyAddress, opts, agentSettings)
 	assert.NoError(t, err, "RegisterAgent failed")
 
 	assert.NotNil(t, tx, "tx is nil")
 	assert.NotEmpty(t, tx.Hash().String(), "txHash is nil")
 
 	fmt.Println("txHash:", tx.Hash().String())
+	fmt.Println("agent address:", agent)
 }
 
 func Test_verify(t *testing.T) {

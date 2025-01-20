@@ -1,4 +1,4 @@
-module ai-agent-go-sdk
+module github.com/APRO-com/ai-agent-sdk-go
 
 go 1.22.10
 

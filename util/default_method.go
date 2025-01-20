@@ -9,6 +9,7 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"math/big"
+	"time"
 )
 
 var DefaultSignerFn func(prikey string, chainID *big.Int) func(address common.Address, tx *types.Transaction) (*types.Transaction, error)
@@ -53,4 +54,18 @@ func GetDefaultTransactOpts(client *ethclient.Client, prikey string, chanID, gas
 		GasLimit: gasLimit,
 	}
 	return &opts, nil
+}
+
+func WaitForTransactionReceipt(client *ethclient.Client, txHash common.Hash, maxRetries int, interval time.Duration) (*types.Receipt, error) {
+	var receipt *types.Receipt
+	var err error
+
+	for i := 0; i < maxRetries; i++ {
+		receipt, err = client.TransactionReceipt(context.Background(), txHash)
+		if err == nil {
+			return receipt, nil
+		}
+		time.Sleep(interval)
+	}
+	return nil, fmt.Errorf("failed to fetch transaction receipt after %d retries: %v", maxRetries, err)
 }

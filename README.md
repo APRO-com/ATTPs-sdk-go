@@ -23,20 +23,26 @@ go get github.com/APRO-com/ai-agent-sdk-go
 ### Basic Example
 Here's an example of how to use the SDK to interact with the AI Agent system:
 ```
+import (
+	"fmt"
+	"github.com/APRO-com/ai-agent-sdk-go/config"
+	"github.com/APRO-com/ai-agent-sdk-go/sdk"
+	"log"
+)
 func main() {
-    // Initialize the AI Agent client with the test network
-    client, err := ai_agent_sdk.NewClient(config.BSC_TEST_NET)
-    if err != nil {
-        log.Fatalf("Error creating client: %v", err)
-    }
+	// Initialize the AI Agent client with the test network
+	client, err := sdk.NewClient(config.BSC_TEST_NET)
+	if err != nil {
+		log.Fatalf("Error creating client: %v", err)
+	}
 
-    // Get the version of the AI Agent
-    version, err := client.GetVersion("your-proxy-address")
-    if err != nil {
-        log.Fatalf("Error getting version: %v", err)
-    }
+	// Get the version of the AI Agent
+	version, err := client.GetVersion("your-proxy-address")
+	if err != nil {
+		log.Fatalf("Error getting version: %v", err)
+	}
 
-    fmt.Println("AI Agent Version:", version)
+	fmt.Println("AI Agent Version:", version)
 }
 ```
 
