@@ -20,12 +20,19 @@ go get github.com/APRO-com/ai-agent-sdk-go
 ```
 
 ## Usage
-### Basic Example
+### Basic Verify Example
 Here's an example of how to use the SDK to interact with the AI Agent system:
 ```
+import (
+	"fmt"
+	"github.com/APRO-com/ai-agent-sdk-go/attps/verify/config"
+	"github.com/APRO-com/ai-agent-sdk-go/attps/verify/sdk"
+	"log"
+)
+
 func main() {
     // Initialize the AI Agent client with the test network
-    client, err := ai_agent_sdk.NewClient(config.BSC_TEST_NET)
+    client, err := sdk.NewClient(config.BSC_TEST_NET)
     if err != nil {
         log.Fatalf("Error creating client: %v", err)
     }
@@ -40,7 +47,84 @@ func main() {
 }
 ```
 
-For more examples, see [client_test.go](sdk%2Fclient_test.go)
+For more examples, see [client_test.go](attps/verify/client_test.go)
+
+### VRF Example
+Here's an example of how to use the SDK to interact with the AI Agent VRF system:
+```
+import (
+	"github.com/APRO-com/ai-agent-sdk-go/attps/core"
+	"github.com/APRO-com/ai-agent-sdk-go/attps/core/option"
+	"github.com/APRO-com/ai-agent-sdk-go/util"
+	"context"
+	"log"
+	"testing"
+	"time"
+)
+
+func main() {
+	ctx := context.Background()
+
+	opts := []core.ClientOption{
+		option.WithNullAuthCipher(),
+	}
+	client, err := core.NewClient(ctx, opts...)
+	if err != nil {
+		log.Printf("new client err:%s", err)
+	}
+
+	svc := VRF{Client: client}
+	providers, err := svc.Provider(ctx)
+	if err != nil {
+		log.Errorf("call Provider err:%s", err)
+		return
+	}
+
+	version := int64(1)
+	targetAgentID := util.NewUUIDv4()
+	customerSeed := util.SecureRandomString(4)
+	keyHash := providers[0].KeyHash
+	callbackUri := "http://127.0.0.1:8888/api/vrf/proof"
+
+	requestTimestamp := time.Now().Unix()
+	requestID, err := new(VRF).CalRequestID(version, targetAgentID, customerSeed, requestTimestamp, callbackUri)
+	if err != nil {
+		log.Errorf("call CalRequestID err:%s", err)
+		return
+	}
+	random, err := svc.Request(ctx,
+		VRFRequest{
+			Version:          core.Int64(version),
+			TargetAgentID:    core.String(targetAgentID),
+			ClientSeed:       core.String(customerSeed),
+			KeyHash:          core.String(*keyHash),
+			RequestTimestamp: core.Int64(requestTimestamp),
+			RequestID:        core.String(requestID),
+			CallbackURI:      core.String(callbackUri),
+		},
+	)
+
+	if err != nil {
+		log.Errorf("call Request err:%s", err)
+		return
+	} else {
+		log.Print(random)
+	}
+
+	// query proof
+	proof, err := svc.QueryProof(ctx, requestID)
+	if err != nil {
+		log.Errorf("call QueryProof err:%s", err)
+		return
+	} else {
+		log.Print(proof.Marshal())
+	}
+}
+```
+
+For more examples, see [vrf_test.go](attps/vrf/vrf_test.go)
+
+In customer service, it is necessary to implement a callback to obtain the VRF proof and perform verification. Specifically, implement the /api/vrf/proof request notification interface. Refer to VRFProof for the request format, and the response should follow the BaseResponse format.
 
 ## Contributing
 

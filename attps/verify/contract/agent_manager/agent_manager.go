@@ -33,8 +33,8 @@ var (
 type CommonAgentConfig struct {
 	ConfigDigest      [32]byte
 	ConfigBlockNumber uint32
-	IsActive          bool
-	Settings          CommonAgentSettings
+	IsActive bool
+	Settings CommonAgentSettings
 }
 
 // CommonAgentHeader is an auto generated low-level Go binding around an user-defined struct.
