@@ -1,4 +1,4 @@
-// Package signers 数字签名生成器
+// Package signers Digital Signature Generator
 package signers
 
 import (

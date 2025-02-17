@@ -10,7 +10,7 @@ import (
 
 // Credentials Request Header Authorization Information Generator
 type Credentials struct {
-	Signer auth.Signer // 数字签名生成器
+	Signer auth.Signer // Digital Signature Generator
 }
 
 func (c *Credentials) GenerateAuthorization(
