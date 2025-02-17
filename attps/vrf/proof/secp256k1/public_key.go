@@ -10,7 +10,7 @@ import (
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"go.dedis.ch/kyber/v3"
 
-	"github.com/APRO-com/ai-agent-sdk-go/attps/vrf/proof/utils"
+	"github.com/APRO-com/ATTPs-sdk-go/attps/vrf/proof/utils"
 )
 
 // PublicKey is a secp256k1 point in compressed format

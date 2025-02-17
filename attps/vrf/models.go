@@ -1,7 +1,7 @@
 package vrf
 
 import (
-	"github.com/APRO-com/ai-agent-sdk-go/attps/service"
+	"github.com/APRO-com/ATTPs-sdk-go/attps/service"
 )
 
 // VRFRequest Random Request

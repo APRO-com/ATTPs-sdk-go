@@ -4,7 +4,7 @@ package signers
 import (
 	"context"
 	"fmt"
-	"github.com/APRO-com/ai-agent-sdk-go/attps/core/auth"
+	"github.com/APRO-com/ATTPs-sdk-go/attps/core/auth"
 )
 
 // IdentifierSigner Identifier digital signature generator

@@ -12,7 +12,7 @@ import (
 	"go.dedis.ch/kyber/v3"
 	"go.dedis.ch/kyber/v3/group/curve25519"
 
-	"github.com/APRO-com/ai-agent-sdk-go/attps/vrf/proof/cryptotest"
+	"github.com/APRO-com/ATTPs-sdk-go/attps/vrf/proof/cryptotest"
 )
 
 var numScalarSamples = 10

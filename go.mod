@@ -1,4 +1,4 @@
-module github.com/APRO-com/ai-agent-sdk-go
+module github.com/APRO-com/ATTPs-sdk-go
 
 go 1.22.10
 

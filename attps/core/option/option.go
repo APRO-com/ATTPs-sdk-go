@@ -1,10 +1,10 @@
 package option
 
 import (
-	"github.com/APRO-com/ai-agent-sdk-go/attps/core/auth"
+	"github.com/APRO-com/ATTPs-sdk-go/attps/core/auth"
 	"net/http"
 
-	"github.com/APRO-com/ai-agent-sdk-go/attps/core"
+	"github.com/APRO-com/ATTPs-sdk-go/attps/core"
 )
 
 // region SignerOption

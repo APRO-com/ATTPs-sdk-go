@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/APRO-com/ai-agent-sdk-go/attps/core/auth"
+	"github.com/APRO-com/ATTPs-sdk-go/attps/core/auth"
 )
 
 // DialSettings core.Client Configuration information required

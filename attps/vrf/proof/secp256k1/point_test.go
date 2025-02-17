@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/APRO-com/ai-agent-sdk-go/attps/vrf/proof/cryptotest"
+	"github.com/APRO-com/ATTPs-sdk-go/attps/vrf/proof/cryptotest"
 )
 
 var numPointSamples = 10

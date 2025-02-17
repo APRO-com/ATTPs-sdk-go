@@ -16,7 +16,7 @@ This SDK is intended for developers building Go applications that need to intera
 To use the AI Agent SDK for Go, you need to install the package via `go get`. Run the following command to install the SDK:
 
 ```bash
-go get github.com/APRO-com/ai-agent-sdk-go
+go get github.com/APRO-com/ATTPs-sdk-go
 ```
 
 ## Usage
@@ -25,8 +25,8 @@ Here's an example of how to use the SDK to interact with the AI Agent system:
 ```
 import (
 	"fmt"
-	"github.com/APRO-com/ai-agent-sdk-go/config"
-	"github.com/APRO-com/ai-agent-sdk-go/sdk"
+	"github.com/APRO-com/ATTPs-sdk-go/attps/verify/config"
+	"github.com/APRO-com/ATTPs-sdk-go/attps/verify/sdk"
 	"log"
 )
 func main() {
@@ -52,9 +52,11 @@ For more examples, see [client_test.go](attps/verify/client_test.go)
 Here's an example of how to use the SDK to interact with the AI Agent VRF system:
 ```
 import (
-	"github.com/APRO-com/ai-agent-sdk-go/attps/core"
-	"github.com/APRO-com/ai-agent-sdk-go/attps/core/option"
-	"github.com/APRO-com/ai-agent-sdk-go/util"
+	"github.com/APRO-com/ATTPs-sdk-go/attps/core"
+	"github.com/APRO-com/ATTPs-sdk-go/attps/core/option"
+	"github.com/APRO-com/ATTPs-sdk-go/util"
+	"github.com/APRO-com/ATTPs-sdk-go/attps/vrf"
+	
 	"context"
 	"log"
 	"testing"
@@ -72,7 +74,7 @@ func main() {
 		log.Printf("new client err:%s", err)
 	}
 
-	svc := VRF{Client: client}
+	svc := vrf.VRF{Client: client}
 	providers, err := svc.Provider(ctx)
 	if err != nil {
 		log.Errorf("call Provider err:%s", err)
@@ -86,13 +88,13 @@ func main() {
 	callbackUri := "http://127.0.0.1:8888/api/vrf/proof"
 
 	requestTimestamp := time.Now().Unix()
-	requestID, err := new(VRF).CalRequestID(version, targetAgentID, customerSeed, requestTimestamp, callbackUri)
+	requestID, err := new(vrf.VRF).CalRequestID(version, targetAgentID, customerSeed, requestTimestamp, callbackUri)
 	if err != nil {
 		log.Errorf("call CalRequestID err:%s", err)
 		return
 	}
 	random, err := svc.Request(ctx,
-		VRFRequest{
+		vrf.VRFRequest{
 			Version:          core.Int64(version),
 			TargetAgentID:    core.String(targetAgentID),
 			ClientSeed:       core.String(customerSeed),

@@ -7,9 +7,9 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"go.dedis.ch/kyber/v3"
 
-	"github.com/APRO-com/ai-agent-sdk-go/attps/vrf/proof/secp256k1"
-	"github.com/APRO-com/ai-agent-sdk-go/attps/vrf/proof/utils"
-	bm "github.com/APRO-com/ai-agent-sdk-go/attps/vrf/proof/utils/big_math"
+	"github.com/APRO-com/ATTPs-sdk-go/attps/vrf/proof/secp256k1"
+	"github.com/APRO-com/ATTPs-sdk-go/attps/vrf/proof/utils"
+	bm "github.com/APRO-com/ATTPs-sdk-go/attps/vrf/proof/utils/big_math"
 	"github.com/smartcontractkit/chainlink-common/pkg/utils/hex"
 )
 

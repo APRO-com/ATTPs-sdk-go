@@ -3,9 +3,9 @@ package verify
 import (
 	"encoding/hex"
 	"fmt"
-	"github.com/APRO-com/ai-agent-sdk-go/attps/verify/config"
-	"github.com/APRO-com/ai-agent-sdk-go/attps/verify/contract/agent_proxy"
-	"github.com/APRO-com/ai-agent-sdk-go/util"
+	"github.com/APRO-com/ATTPs-sdk-go/attps/verify/config"
+	"github.com/APRO-com/ATTPs-sdk-go/attps/verify/contract/agent_proxy"
+	"github.com/APRO-com/ATTPs-sdk-go/util"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/stretchr/testify/assert"
 	"math/big"
