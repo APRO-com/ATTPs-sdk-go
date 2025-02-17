@@ -1,9 +1,9 @@
-package sdk
+package verify
 
 import (
 	"fmt"
-	"github.com/APRO-com/ai-agent-sdk-go/contract/agent_proxy"
-	"github.com/APRO-com/ai-agent-sdk-go/util"
+	"github.com/APRO-com/ATTPs-sdk-go/attps/verify/contract/agent_proxy"
+	"github.com/APRO-com/ATTPs-sdk-go/util"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/google/uuid"
 	"math/big"

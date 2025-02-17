@@ -1,13 +1,13 @@
-package sdk
+package verify
 
 import (
 	"encoding/hex"
 	"fmt"
-	"github.com/APRO-com/ai-agent-sdk-go/config"
-	"github.com/APRO-com/ai-agent-sdk-go/contract/agent_manager"
-	"github.com/APRO-com/ai-agent-sdk-go/contract/agent_proxy"
-	"github.com/APRO-com/ai-agent-sdk-go/contract/converter"
-	"github.com/APRO-com/ai-agent-sdk-go/util"
+	"github.com/APRO-com/ATTPs-sdk-go/attps/verify/config"
+	"github.com/APRO-com/ATTPs-sdk-go/attps/verify/contract/agent_manager"
+	"github.com/APRO-com/ATTPs-sdk-go/attps/verify/contract/agent_proxy"
+	"github.com/APRO-com/ATTPs-sdk-go/attps/verify/contract/converter"
+	"github.com/APRO-com/ATTPs-sdk-go/util"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
