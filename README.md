@@ -1,8 +1,8 @@
-# APRO AI Agent SDK for Go
+# APRO ATTPs SDK for Go
 
-The **APRO AI Agent SDK for Go** is a Go-based SDK designed to interact with the APRO AI Agent system. It provides tools and methods for communicating with the APRO AI Agent platform, sending transactions, managing agent settings, and more.
+The **APRO ATTPs SDK for Go** is a Go-based SDK designed to interact with the APRO ATTPs system. It provides tools and methods for communicating with the APRO ATTPs platform, sending transactions, managing agent settings, and more.
 
-This SDK is intended for developers building Go applications that need to interact with the **APRO AI Agent**.
+This SDK is intended for developers building Go applications that need to interact with the **APRO ATTPs **.
 
 ## Table of Contents
 
@@ -13,7 +13,7 @@ This SDK is intended for developers building Go applications that need to intera
 
 ## Installation
 
-To use the AI Agent SDK for Go, you need to install the package via `go get`. Run the following command to install the SDK:
+To use the ATTPs SDK for Go, you need to install the package via `go get`. Run the following command to install the SDK:
 
 ```bash
 go get github.com/APRO-com/ATTPs-sdk-go
@@ -21,45 +21,45 @@ go get github.com/APRO-com/ATTPs-sdk-go
 
 ## Usage
 ### Basic Verify Example
-Here's an example of how to use the SDK to interact with the AI Agent system:
+Here's an example of how to use the SDK to interact with the ATTPs system:
 ```
 import (
 	"fmt"
+	"github.com/APRO-com/ATTPs-sdk-go/attps/verify"
 	"github.com/APRO-com/ATTPs-sdk-go/attps/verify/config"
-	"github.com/APRO-com/ATTPs-sdk-go/attps/verify/sdk"
 	"log"
 )
+
 func main() {
-	// Initialize the AI Agent client with the test network
-	client, err := sdk.NewClient(config.BSC_TEST_NET)
+	// Initialize the ATTPs verify client with the test network
+	client, err := verify.NewClient(config.BSC_TEST_NET)
 	if err != nil {
 		log.Fatalf("Error creating client: %v", err)
 	}
 
-	// Get the version of the AI Agent
+	// Get the version of the ATTPs verify
 	version, err := client.GetVersion("your-proxy-address")
 	if err != nil {
 		log.Fatalf("Error getting version: %v", err)
 	}
 
-	fmt.Println("AI Agent Version:", version)
+	fmt.Println("ATTPs verify Version:", version)
 }
 ```
 
 For more examples, see [client_test.go](attps/verify/client_test.go)
 
 ### VRF Example
-Here's an example of how to use the SDK to interact with the AI Agent VRF system:
+Here's an example of how to use the SDK to interact with the ATTPs VRF system:
 ```
 import (
 	"github.com/APRO-com/ATTPs-sdk-go/attps/core"
 	"github.com/APRO-com/ATTPs-sdk-go/attps/core/option"
-	"github.com/APRO-com/ATTPs-sdk-go/util"
 	"github.com/APRO-com/ATTPs-sdk-go/attps/vrf"
-	
+	"github.com/APRO-com/ATTPs-sdk-go/util"
+
 	"context"
 	"log"
-	"testing"
 	"time"
 )
 
@@ -77,7 +77,7 @@ func main() {
 	svc := vrf.VRF{Client: client}
 	providers, err := svc.Provider(ctx)
 	if err != nil {
-		log.Errorf("call Provider err:%s", err)
+		log.Fatalf("call Provider err:%s", err)
 		return
 	}
 
@@ -90,7 +90,7 @@ func main() {
 	requestTimestamp := time.Now().Unix()
 	requestID, err := new(vrf.VRF).CalRequestID(version, targetAgentID, customerSeed, requestTimestamp, callbackUri)
 	if err != nil {
-		log.Errorf("call CalRequestID err:%s", err)
+		log.Fatalf("call CalRequestID err:%s", err)
 		return
 	}
 	random, err := svc.Request(ctx,
@@ -106,7 +106,7 @@ func main() {
 	)
 
 	if err != nil {
-		log.Errorf("call Request err:%s", err)
+		log.Fatalf("call Request err:%s", err)
 		return
 	} else {
 		log.Print(random)
@@ -115,12 +115,13 @@ func main() {
 	// query proof
 	proof, err := svc.QueryProof(ctx, requestID)
 	if err != nil {
-		log.Errorf("call QueryProof err:%s", err)
+		log.Fatalf("call QueryProof err:%s", err)
 		return
 	} else {
 		log.Print(proof.Marshal())
 	}
 }
+
 ```
 
 For more examples, see [vrf_test.go](attps/vrf/vrf_test.go)
@@ -129,7 +130,7 @@ In customer service, it is necessary to implement a callback to obtain the VRF p
 
 ## Contributing
 
-We welcome contributions to the AI Agent SDK for Go. To contribute:
+We welcome contributions to the ATTPs SDK for Go. To contribute:
 
 1. Fork the repository.
 2. Create a new branch (git checkout -b feature-name).
