@@ -6,7 +6,6 @@ import "time"
 const (
 	Version         = "0.0.1"                  // SDK version
 	UserAgentFormat = "ATTPs-Go/%s (%s) GO/%s" // UserAgent's info
-	APIBaseServer   = "http://10.0.54.95:8888" // base API address
 )
 
 // HTTP request message Header related constants

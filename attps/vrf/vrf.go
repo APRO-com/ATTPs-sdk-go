@@ -30,7 +30,7 @@ func (v *VRF) Provider(ctx context.Context) (providers []Provider, err error) {
 		localVarHeaderParams = nethttp.Header{}
 	)
 
-	localVarPath := consts.APIBaseServer + "/api/vrf/provider"
+	localVarPath := v.Client.BaseAPIServer() + "/api/vrf/provider"
 
 	// Determine the Content-Type Header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -65,7 +65,7 @@ func (v *VRF) Request(ctx context.Context, req VRFRequest) (random string, err e
 		localVarHeaderParams = nethttp.Header{}
 	)
 
-	localVarPath := consts.APIBaseServer + "/api/vrf/request"
+	localVarPath := v.Client.BaseAPIServer() + "/api/vrf/request"
 
 	// Setup Body Params and check
 	localVarPostBody = &req
@@ -107,7 +107,7 @@ func (v *VRF) QueryProof(ctx context.Context, requestID string) (proof *VRFProof
 		localVarHeaderParams = nethttp.Header{}
 	)
 
-	localVarPath := consts.APIBaseServer + "/api/vrf/query"
+	localVarPath := v.Client.BaseAPIServer() + "/api/vrf/query"
 
 	localVarQueryParams = neturl.Values{}
 	localVarQueryParams.Add("request_id", requestID)

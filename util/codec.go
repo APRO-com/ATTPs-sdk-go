@@ -8,6 +8,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
 	"golang.org/x/crypto/sha3"
+	"net/url"
 	"regexp"
 )
 
@@ -149,4 +150,24 @@ func SecureRandomString(length int) string {
 		result[i] = charset[randomBytes[i]%byte(len(charset))]
 	}
 	return hex.EncodeToString(result)
+}
+
+// IsValidHTTPBaseURL checks if the input is a valid HTTP(S) base URL
+func IsValidHTTPBaseURL(input string) bool {
+	parsedURL, err := url.Parse(input)
+	if err != nil {
+		return false
+	}
+
+	// Must have a valid scheme (http or https)
+	if parsedURL.Scheme != "http" && parsedURL.Scheme != "https" {
+		return false
+	}
+
+	// Must have a valid Host
+	if parsedURL.Host == "" {
+		return false
+	}
+
+	return true
 }

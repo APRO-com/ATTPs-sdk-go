@@ -7,7 +7,7 @@ import (
 
 type withAuthCipherOption struct{ settings core.DialSettings }
 
-// Apply 设置 core.DialSettings 的 Signer、Validator 以及 Cipher
+// Apply Set Signer, Validator, and Cipher for core.DialSettings
 func (w withAuthCipherOption) Apply(o *core.DialSettings) error {
 	o.Signer = w.settings.Signer
 	return nil

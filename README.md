@@ -64,14 +64,17 @@ import (
 )
 
 func main() {
+	baseAPIServer := "http://10.0.54.95:8888" // base API address
+    
 	ctx := context.Background()
 
 	opts := []core.ClientOption{
 		option.WithNullAuthCipher(),
 	}
-	client, err := core.NewClient(ctx, opts...)
+	client, err := core.NewClient(ctx, baseAPIServer, opts...)
 	if err != nil {
-		log.Printf("new client err:%s", err)
+		log.Fatalf("new client err:%s", err)
+		return
 	}
 
 	svc := vrf.VRF{Client: client}

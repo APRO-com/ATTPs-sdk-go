@@ -9,6 +9,7 @@ import (
 	"github.com/APRO-com/ATTPs-sdk-go/attps/core/auth"
 	"github.com/APRO-com/ATTPs-sdk-go/attps/core/auth/credentials"
 	"github.com/APRO-com/ATTPs-sdk-go/attps/core/consts"
+	"github.com/APRO-com/ATTPs-sdk-go/util"
 	"io"
 	"net/http"
 	"net/url"
@@ -25,9 +26,10 @@ var (
 
 // Client base Client
 type Client struct {
-	httpClient *http.Client
-	credential auth.Credential
-	signer     auth.Signer
+	baseAPIServer string
+	httpClient    *http.Client
+	credential    auth.Credential
+	signer        auth.Signer
 }
 
 // APIResult  request result
@@ -45,13 +47,16 @@ type ClientOption interface {
 }
 
 // NewClient initializes an HTTPClient
-func NewClient(ctx context.Context, opts ...ClientOption) (*Client, error) {
+func NewClient(ctx context.Context, baseAPIServer string, opts ...ClientOption) (*Client, error) {
+	if !util.IsValidHTTPBaseURL(baseAPIServer) {
+		return nil, fmt.Errorf("invalid http base URL: %s, ", baseAPIServer)
+	}
 	settings, err := initSettings(opts)
 	if err != nil {
 		return nil, fmt.Errorf("init client setting err:%v", err)
 	}
 
-	client := initClientWithSettings(ctx, settings)
+	client := initClientWithSettings(ctx, baseAPIServer, settings)
 	return client, nil
 }
 
@@ -64,6 +69,10 @@ func SelectHeaderContentType(contentTypes []string) string {
 		return consts.ApplicationJSON
 	}
 	return contentTypes[0] // use the first content type specified in 'consumes'
+}
+
+func (client *Client) BaseAPIServer() string {
+	return client.baseAPIServer
 }
 
 // Request Send request
@@ -146,11 +155,12 @@ func initSettings(opts []ClientOption) (*DialSettings, error) {
 	return &o, nil
 }
 
-func initClientWithSettings(_ context.Context, settings *DialSettings) *Client {
+func initClientWithSettings(_ context.Context, baseAPIServer string, settings *DialSettings) *Client {
 	client := &Client{
-		signer:     settings.Signer,
-		credential: &credentials.Credentials{Signer: settings.Signer},
-		httpClient: settings.HTTPClient,
+		baseAPIServer: baseAPIServer,
+		signer:        settings.Signer,
+		credential:    &credentials.Credentials{Signer: settings.Signer},
+		httpClient:    settings.HTTPClient,
 	}
 
 	if client.httpClient == nil {
